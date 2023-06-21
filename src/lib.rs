@@ -1,4 +1,4 @@
-#[proc_macro_derive()]
+#[proc_macro_derive(FromSqlxPostgresError)]
 pub fn from_sqlx_postgres_error(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     proc_macro_helpers::panic_location::panic_location(); //panic_location function from https://github.com/kuqmua/proc_macro_helpers
     let ast: syn::DeriveInput = syn::parse(input)
@@ -85,6 +85,14 @@ pub fn from_sqlx_postgres_error(input: proc_macro::TokenStream) -> proc_macro::T
                         code_occurence: crate::code_occurence_tufa_common!(),
                     },
                 }
+            }
+        }
+        impl<'from_sqlx_postgres_error_reserved_lifetime> From<#ident<'from_sqlx_postgres_error_reserved_lifetime>> for actix_web::HttpResponse {
+            fn from(val: #ident<'from_sqlx_postgres_error_reserved_lifetime>) -> Self {
+                let mut actix_web_http_response: actix_web::HttpResponseBuilder = (&val).into();
+                actix_web_http_response.json(actix_web::web::Json(
+                    val.into_serialize_deserialize_version(),
+                ))
             }
         }
     };
