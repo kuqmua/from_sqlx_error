@@ -1,8 +1,12 @@
 #[proc_macro_derive(FromSqlxPostgresError)]
 pub fn from_sqlx_postgres_error(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     proc_macro_helpers::panic_location::panic_location(); //panic_location function from https://github.com/kuqmua/proc_macro_helpers
-    let ast: syn::DeriveInput = syn::parse(input)
-        .unwrap_or_else(|_| panic!("let ast: syn::DeriveInput = syn::parse(input) failed"));
+    let ast: syn::DeriveInput = syn::parse(input).unwrap_or_else(|_| {
+        panic!(
+            "{}",
+            proc_macro_helpers::global_variables::hardcode::AST_PARSE_FAILED
+        )
+    });
     let ident = &ast.ident;
     let gen = quote::quote! {
         impl<'from_sqlx_postgres_error_reserved_lifetime> From<sqlx::Error> for #ident<'from_sqlx_postgres_error_reserved_lifetime> {
