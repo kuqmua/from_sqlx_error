@@ -9,7 +9,7 @@ pub fn from_sqlx_postgres_error(input: proc_macro::TokenStream) -> proc_macro::T
     });
     let ident = &ast.ident;
     let gen = quote::quote! {
-        impl<'from_sqlx_postgres_error_reserved_lifetime> From<sqlx::Error> for #ident<'from_sqlx_postgres_error_reserved_lifetime> {
+        impl From<sqlx::Error> for #ident {
             fn from(val: sqlx::Error) -> Self {
                 match val {
                     sqlx::Error::Configuration(box_dyn_error) => {
