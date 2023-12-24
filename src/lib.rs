@@ -65,7 +65,7 @@ pub fn from_sqlx_postgres_error(input: proc_macro::TokenStream) -> proc_macro::T
                         }
                     }
                     sqlx::Error::Decode(value) => Self::Decode {
-                        decode_box_dyn_error: value.to_string(),
+                        decode: value.to_string(),
                         code_occurence: crate::code_occurence_tufa_common!(),
                     },
                     sqlx::Error::PoolTimedOut => Self::PoolTimedOut {
