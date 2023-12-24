@@ -14,7 +14,7 @@ pub fn from_sqlx_postgres_error(input: proc_macro::TokenStream) -> proc_macro::T
                 match val {
                     sqlx::Error::Configuration(box_dyn_error) => {
                         Self::Configuration {
-                            configuration_box_dyn_error: box_dyn_error.to_string(),
+                            configuration: box_dyn_error.to_string(),
                             code_occurence: crate::code_occurence_tufa_common!(),
                         }
                     }
