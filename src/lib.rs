@@ -12,24 +12,24 @@ pub fn from_sqlx_postgres_error(input: proc_macro::TokenStream) -> proc_macro::T
         impl From<sqlx::Error> for #ident {
             fn from(val: sqlx::Error) -> Self {
                 match val {
-                    sqlx::Error::Configuration(box_dyn_error) => {
+                    sqlx::Error::Configuration(value) => {
                         Self::Configuration {
-                            configuration: box_dyn_error.to_string(),
+                            configuration: value.to_string(),
                             code_occurence: crate::code_occurence_tufa_common!(),
                         }
                     }
-                    sqlx::Error::Database(box_dyn_database_error) => {
+                    sqlx::Error::Database(database) => {
                         Self::Database {
-                            box_dyn_database_error: box_dyn_database_error.message().to_string(),
+                            database: database.message().to_string(),
                             code_occurence: crate::code_occurence_tufa_common!(),
                         }
                     }
-                    sqlx::Error::Io(io_error) => Self::Io {
-                        io_error,
+                    sqlx::Error::Io(io) => Self::Io {
+                        io,
                         code_occurence: crate::code_occurence_tufa_common!(),
                     },
-                    sqlx::Error::Tls(box_dyn_error) => Self::Tls {
-                        box_dyn_error: box_dyn_error.to_string(),
+                    sqlx::Error::Tls(value) => Self::Tls {
+                        tls: value.to_string(),
                         code_occurence: crate::code_occurence_tufa_common!(),
                     },
                     sqlx::Error::Protocol(string) => Self::Protocol {
@@ -64,8 +64,8 @@ pub fn from_sqlx_postgres_error(input: proc_macro::TokenStream) -> proc_macro::T
                             code_occurence: crate::code_occurence_tufa_common!(),
                         }
                     }
-                    sqlx::Error::Decode(decode_box_dyn_error) => Self::Decode {
-                        decode_box_dyn_error: decode_box_dyn_error.to_string(),
+                    sqlx::Error::Decode(value) => Self::Decode {
+                        decode_box_dyn_error: value.to_string(),
                         code_occurence: crate::code_occurence_tufa_common!(),
                     },
                     sqlx::Error::PoolTimedOut => Self::PoolTimedOut {
